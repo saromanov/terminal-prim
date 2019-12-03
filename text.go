@@ -7,7 +7,7 @@ import (
 	"github.com/mgutz/ansi"
 )
 
-type textMethod func(int)
+type textMethod func()
 
 // Text defines implementation basic things for text
 type Text struct {
@@ -30,7 +30,7 @@ func NewText(text string) *Text {
 
 // IdentLeft provides idents from left by n symbols
 func (t *Text) IdentLeft(n int) *Text {
-	t.pipeline.methods = append(t.pipeline.methods, func(num int) {
+	t.pipeline.methods = append(t.pipeline.methods, func() {
 		t.buffer.WriteString(strings.Repeat(" ", n))
 	})
 	/*buffer := t.buffer
@@ -47,7 +47,7 @@ func (t *Text) IdentLeft(n int) *Text {
 
 // IdentTop provides ident from top on n symbols
 func (t *Text) IdentTop(n int) *Text {
-	t.pipeline.methods = append(t.pipeline.methods, func(num int) {
+	t.pipeline.methods = append(t.pipeline.methods, func() {
 		for i := 0; i < n; i++ {
 			t.buffer.WriteString("\n")
 		}
@@ -81,6 +81,9 @@ func output(t *Text) string {
 	if len(t.pipeline.methods) == 1 {
 
 	}
-
+	for _, pipe := range t.pipeline.methods {
+		pipe()
+	}
+	t.buffer.WriteString(t.output)
 	return t.buffer.String()
 }
