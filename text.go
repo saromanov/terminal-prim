@@ -14,7 +14,7 @@ type Text struct {
 	output      string
 	buffer      bytes.Buffer
 	outputColor string
-	pipeline    []TextPipleline
+	pipeline    TextPipleline
 }
 
 type TextPipleline struct {
@@ -24,33 +24,34 @@ type TextPipleline struct {
 func NewText(text string) *Text {
 	return &Text{
 		output:   text,
-		pipeline: []TextPipleline{},
+		pipeline: TextPipleline{},
 	}
 }
 
 // IdentLeft provides idents from left by n symbols
 func (t *Text) IdentLeft(n int) *Text {
-	buffer := t.buffer
-	result := strings.Repeat(" ", n)
-	lines := strings.Split(t.output, "\n")
-	for _, line := range lines {
-		buffer.WriteString(result)
-		if t.outputColor != "" {
-			buffer.WriteString(t.outputColor)
-			continue
-		}
-		buffer.WriteString(line)
+	t.pipeline.methods = append(t.pipeline.methods, func(num int) {
+		t.buffer.WriteString(strings.Repeat(" ", n))
+	})
+	/*buffer := t.buffer
+	buffer.WriteString(strings.Repeat(" ", n))
+	if t.outputColor != "" {
+		buffer.WriteString(t.outputColor)
+	} else {
+		buffer.WriteString(t.output)
 	}
 	t.buffer = buffer
-	t.output = result
+	t.output*/
 	return t
 }
 
 // IdentTop provides ident from top on n symbols
 func (t *Text) IdentTop(n int) *Text {
-	for i := 0; i < n; i++ {
-		t.buffer.WriteString("\n")
-	}
+	t.pipeline.methods = append(t.pipeline.methods, func(num int) {
+		for i := 0; i < n; i++ {
+			t.buffer.WriteString("\n")
+		}
+	})
 	return t
 }
 
@@ -74,10 +75,10 @@ func (t *Text) Output() string {
 }
 
 func output(t *Text) string {
-	if len(t.pipeline) == 0 {
+	if len(t.pipeline.methods) == 0 {
 		return ""
 	}
-	if len(t.pipeline) == 1 {
+	if len(t.pipeline.methods) == 1 {
 
 	}
 
