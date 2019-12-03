@@ -21,7 +21,7 @@ func NewText(text string) *Text {
 }
 
 // IdentLeft provides idents from left by n symbols
-func (t *Text) IdentLeft(n int) {
+func (t *Text) IdentLeft(n int) *Text {
 	buffer := t.buffer
 	result := strings.Repeat(" ", n)
 	lines := strings.Split(t.output, "\n")
@@ -35,25 +35,29 @@ func (t *Text) IdentLeft(n int) {
 	}
 	t.buffer = buffer
 	t.output = result
+	return t
 }
 
 // IdentTop provides ident from top on n symbols
-func (t *Text) IdentTop(n int) {
+func (t *Text) IdentTop(n int) *Text {
 	for i := 0; i < n; i++ {
 		t.buffer.WriteString("\n")
 	}
+	return t
 }
 
-func (t *Text) AlignCenter(width int) {
+func (t *Text) AlignCenter(width int) *Text {
 	totalPadLen := width - len(t.output)
 	if totalPadLen < 0 {
 		totalPadLen = 0
 	}
 	t.buffer.WriteString(strings.Repeat(" ", totalPadLen/2))
+	return t
 }
 
-func (t *Text) Color(color string) {
+func (t *Text) Color(color string) *Text {
 	t.outputColor = ansi.Color(t.output, color)
+	return t
 }
 
 // Output returns result string
