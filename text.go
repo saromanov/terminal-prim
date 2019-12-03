@@ -74,15 +74,13 @@ func (t *Text) Output() *Text {
 	fmt.Println(output(t))
 	t.output = ""
 	t.outputColor = ""
+	t.pipeline = TextPipleline{}
 	return t
 }
 
 func output(t *Text) string {
 	if len(t.pipeline.methods) == 0 {
 		return ""
-	}
-	if len(t.pipeline.methods) == 1 {
-
 	}
 	for _, pipe := range t.pipeline.methods {
 		pipe()
