@@ -16,6 +16,9 @@ type Text struct {
 	buffer      bytes.Buffer
 	outputColor string
 	pipeline    TextPipleline
+	textLines   uint
+	methods     map[uint][]textMethod
+	lines       map[uint]string
 }
 
 type TextPipleline struct {
@@ -23,15 +26,17 @@ type TextPipleline struct {
 }
 
 func NewText(text string) *Text {
+	lines := map[uint]string{0: text}
 	return &Text{
-		output:   text,
-		pipeline: TextPipleline{},
+		output:  text,
+		methods: map[uint][]textMethod{},
+		lines:   lines,
 	}
 }
 
 // IdentLeft provides idents from left by n symbols
 func (t *Text) IdentLeft(n int) *Text {
-	t.pipeline.methods = append(t.pipeline.methods, func() {
+	t.addMethod(func() {
 		t.buffer.WriteString(strings.Repeat(" ", n))
 	})
 	return t
@@ -39,7 +44,7 @@ func (t *Text) IdentLeft(n int) *Text {
 
 // IdentTop provides ident from top on n symbols
 func (t *Text) IdentTop(n int) *Text {
-	t.pipeline.methods = append(t.pipeline.methods, func() {
+	t.addMethod(func() {
 		for i := 0; i < n; i++ {
 			t.buffer.WriteString("\n")
 		}
@@ -50,6 +55,8 @@ func (t *Text) IdentTop(n int) *Text {
 // Text overwrites current main string
 func (t *Text) Text(str string) *Text {
 	t.output = str
+	t.textLines++
+	t.lines[t.textLines] = str
 	return t
 }
 
@@ -62,8 +69,9 @@ func (t *Text) AlignCenter(width int) *Text {
 	return t
 }
 
+// Color provides coloring of the text
 func (t *Text) Color(color string) *Text {
-	t.pipeline.methods = append(t.pipeline.methods, func() {
+	t.addMethod(func() {
 		t.outputColor = ansi.Color(t.output, color)
 	})
 	return t
@@ -78,17 +86,31 @@ func (t *Text) Output() *Text {
 	return t
 }
 
+func (t *Text) addMethod(method func()) {
+	t.pipeline.methods = append(t.pipeline.methods, method)
+	t.methods[t.textLines] = append(t.methods[t.textLines], method)
+}
+
 func output(t *Text) string {
 	if len(t.pipeline.methods) == 0 {
 		return ""
 	}
-	for _, pipe := range t.pipeline.methods {
-		pipe()
-	}
-	if t.outputColor != "" {
-		t.buffer.WriteString(t.outputColor)
-	} else {
-		t.buffer.WriteString(t.output)
+	var i uint
+	for {
+		if i > t.textLines {
+			break
+		}
+		pipes, _ := t.methods[i]
+		for _, pipe := range pipes {
+			pipe()
+		}
+		if t.outputColor != "" {
+			t.buffer.WriteString(t.lines[i])
+		} else {
+			t.buffer.WriteString(t.lines[i])
+		}
+		i++
+
 	}
 	return t.buffer.String()
 }
