@@ -33,15 +33,6 @@ func (t *Text) IdentLeft(n int) *Text {
 	t.pipeline.methods = append(t.pipeline.methods, func() {
 		t.buffer.WriteString(strings.Repeat(" ", n))
 	})
-	/*buffer := t.buffer
-	buffer.WriteString(strings.Repeat(" ", n))
-	if t.outputColor != "" {
-		buffer.WriteString(t.outputColor)
-	} else {
-		buffer.WriteString(t.output)
-	}
-	t.buffer = buffer
-	t.output*/
 	return t
 }
 
@@ -65,7 +56,9 @@ func (t *Text) AlignCenter(width int) *Text {
 }
 
 func (t *Text) Color(color string) *Text {
-	t.outputColor = ansi.Color(t.output, color)
+	t.pipeline.methods = append(t.pipeline.methods, func() {
+		t.outputColor = ansi.Color(t.output, color)
+	})
 	return t
 }
 
@@ -84,6 +77,10 @@ func output(t *Text) string {
 	for _, pipe := range t.pipeline.methods {
 		pipe()
 	}
-	t.buffer.WriteString(t.output)
+	if t.outputColor != "" {
+		t.buffer.WriteString(t.outputColor)
+	} else {
+		t.buffer.WriteString(t.output)
+	}
 	return t.buffer.String()
 }
