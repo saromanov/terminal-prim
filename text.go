@@ -7,16 +7,24 @@ import (
 	"github.com/mgutz/ansi"
 )
 
+type textMethod func(int)
+
 // Text defines implementation basic things for text
 type Text struct {
 	output      string
 	buffer      bytes.Buffer
 	outputColor string
+	pipeline    []TextPipleline
+}
+
+type TextPipleline struct {
+	methods []textMethod
 }
 
 func NewText(text string) *Text {
 	return &Text{
-		output: text,
+		output:   text,
+		pipeline: []TextPipleline{},
 	}
 }
 
@@ -62,5 +70,16 @@ func (t *Text) Color(color string) *Text {
 
 // Output returns result string
 func (t *Text) Output() string {
+	return output(t)
+}
+
+func output(t *Text) string {
+	if len(t.pipeline) == 0 {
+		return ""
+	}
+	if len(t.pipeline) == 1 {
+
+	}
+
 	return t.buffer.String()
 }
