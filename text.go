@@ -19,12 +19,14 @@ func NewText(text string) *Text {
 
 // IdentLeft provides idents from left by n symbols
 func (t *Text) IdentLeft(n int) {
+	buffer := t.buffer
 	result := strings.Repeat(" ", n)
 	lines := strings.Split(t.output, "\n")
 	for _, line := range lines {
-		t.buffer.WriteString(result)
-		t.buffer.WriteString(line)
+		buffer.WriteString(result)
+		buffer.WriteString(line)
 	}
+	t.buffer = buffer
 	t.output = result
 }
 
@@ -33,7 +35,6 @@ func (t *Text) IdentTop(n int) {
 	for i := 0; i < n; i++ {
 		t.buffer.WriteString("\n")
 	}
-	t.buffer.WriteString(t.output)
 }
 
 // Output returns result string
