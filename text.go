@@ -44,6 +44,14 @@ func (t *Text) IdentTop(n int) {
 	}
 }
 
+func (t *Text) AlignCenter(width int) {
+	totalPadLen := width - len(t.output)
+	if totalPadLen < 0 {
+		totalPadLen = 0
+	}
+	t.buffer.WriteString(strings.Repeat(" ", totalPadLen/2))
+}
+
 func (t *Text) Color(color string) {
 	t.outputColor = ansi.Color(t.output, color)
 }
