@@ -37,6 +37,9 @@ func NewText(text string) *Text {
 
 // IdentLeft provides idents from left by n symbols
 func (t *Text) IdentLeft(n int) *Text {
+	if n < 0 {
+		return t
+	}
 	t.addMethod(func() {
 		t.buffer.WriteString(strings.Repeat(" ", n))
 	})
@@ -45,6 +48,9 @@ func (t *Text) IdentLeft(n int) *Text {
 
 // IdentTop provides ident from top on n symbols
 func (t *Text) IdentTop(n int) *Text {
+	if n < 0 {
+		return t
+	}
 	t.addMethod(func() {
 		for i := 0; i < n; i++ {
 			t.buffer.WriteString("\n")
