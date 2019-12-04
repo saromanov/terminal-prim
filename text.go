@@ -79,10 +79,10 @@ func (t *Text) Color(color string) *Text {
 	return t
 }
 
-// TrimSPace provides removing of the spaces
+// TrimSpace provides removing of the spaces
 func (t *Text) TrimSpace() *Text {
 	left := 0
-	trimmed := strings.TrimLeftFunc(t.output, func(r rune) bool {
+	output := strings.TrimLeftFunc(t.output, func(r rune) bool {
 		if unicode.IsSpace(r) {
 			left++
 			return true
@@ -90,7 +90,8 @@ func (t *Text) TrimSpace() *Text {
 		return false
 	})
 
-	trimmed = strings.TrimRightFunc(trimmed, unicode.IsSpace)
+	output = strings.TrimRightFunc(output, unicode.IsSpace)
+	t.lines[t.textLines] = output
 	return t
 }
 
