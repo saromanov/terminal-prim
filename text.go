@@ -62,11 +62,13 @@ func (t *Text) Text(str string) *Text {
 }
 
 func (t *Text) AlignCenter(width int) *Text {
-	totalPadLen := width - len(t.output)
-	if totalPadLen < 0 {
-		totalPadLen = 0
-	}
-	t.buffer.WriteString(strings.Repeat(" ", totalPadLen/2))
+	t.addMethod(func() {
+		totalPadLen := width - len(t.output)
+		if totalPadLen < 0 {
+			totalPadLen = 0
+		}
+		t.buffer.WriteString(strings.Repeat(" ", totalPadLen/2))
+	})
 	return t
 }
 
