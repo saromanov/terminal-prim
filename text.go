@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/mgutz/ansi"
 )
@@ -75,6 +76,21 @@ func (t *Text) Color(color string) *Text {
 		t.lines[t.textLines] = ansi.Color(t.output, color)
 		t.outputColor = ansi.Color(t.output, color)
 	})
+	return t
+}
+
+// TrimSPace provides removing of the spaces
+func (t *Text) TrimSpace() *Text {
+	left := 0
+	trimmed := strings.TrimLeftFunc(t.output, func(r rune) bool {
+		if unicode.IsSpace(r) {
+			left++
+			return true
+		}
+		return false
+	})
+
+	trimmed = strings.TrimRightFunc(trimmed, unicode.IsSpace)
 	return t
 }
 
