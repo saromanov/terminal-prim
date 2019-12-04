@@ -72,6 +72,7 @@ func (t *Text) AlignCenter(width int) *Text {
 // Color provides coloring of the text
 func (t *Text) Color(color string) *Text {
 	t.addMethod(func() {
+		t.lines[t.textLines] = ansi.Color(t.output, color)
 		t.outputColor = ansi.Color(t.output, color)
 	})
 	return t
@@ -104,11 +105,7 @@ func output(t *Text) string {
 		for _, pipe := range pipes {
 			pipe()
 		}
-		if t.outputColor != "" {
-			t.buffer.WriteString(t.lines[i])
-		} else {
-			t.buffer.WriteString(t.lines[i])
-		}
+		t.buffer.WriteString(t.lines[i])
 		i++
 
 	}
