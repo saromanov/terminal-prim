@@ -103,6 +103,11 @@ func (t *Text) Output() *Text {
 	return t
 }
 
+// String retruns string representation of the text
+func (t *Text) String() string {
+	return output(t)
+}
+
 func (t *Text) addMethod(method func()) {
 	t.pipeline.methods = append(t.pipeline.methods, method)
 	t.methods[t.textLines] = append(t.methods[t.textLines], method)
