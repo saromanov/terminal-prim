@@ -17,3 +17,15 @@ func TestIdentTop(t *testing.T) {
 		String()
 	assert.Equal(t, output, "")
 }
+
+func TestIdentLeft(t *testing.T) {
+	output := NewText("output").
+		IdentLeft(2).
+		String()
+	assert.Equal(t, output, "  output")
+
+	output = NewText("output").
+		IdentTop(-2).
+		String()
+	assert.Equal(t, output, "")
+}
