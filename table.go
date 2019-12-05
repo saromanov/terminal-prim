@@ -16,11 +16,11 @@ func NewTable() *Table {
 }
 
 func (t *Table) AddHeaders(headers ...interface{}) {
-	t.table.AddHeader(headers)
+	t.table.AddHeader(headers...)
 }
 
 func (t *Table) AddLines(lines ...interface{}) {
-	t.table.AddLine(lines)
+	t.table.AddLine(lines...)
 }
 
 func (t *Table) Output() {
