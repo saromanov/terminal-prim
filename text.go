@@ -103,6 +103,12 @@ func (t *Text) TrimSpace() *Text {
 	return t
 }
 
+// RemoveEscapes provides removing of escapes from the line
+func (t *Text) RemoveEscapes() *Text {
+
+	return t
+}
+
 // Output returns result string
 func (t *Text) Output() *Text {
 	fmt.Println(output(t))

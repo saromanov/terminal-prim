@@ -1,8 +1,6 @@
 package prim
 
-import (
-	"github.com/saromanov/tables"
-)
+import "github.com/saromanov/tables"
 
 // Table provides representation of the table
 type Table struct {
