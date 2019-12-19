@@ -105,7 +105,13 @@ func (t *Text) TrimSpace() *Text {
 
 // RemoveEscapes provides removing of escapes from the line
 func (t *Text) RemoveEscapes() *Text {
-
+	for _, line := range t.lines {
+		for _, r := range []rune(line) {
+			if r == '\x1b' {
+				continue
+			}
+		}
+	}
 	return t
 }
 
