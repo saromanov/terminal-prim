@@ -36,3 +36,11 @@ func TestRemoveEscapes(t *testing.T) {
 		String()
 	assert.Equal(t, output, "output")
 }
+
+func TestColor(t *testing.T) {
+	output := NewText("output").Color("red").String()
+	assert.Equal(t, output, "\033[31moutput\033[0m")
+
+	output = NewText("output").Color("reddddd").String()
+	assert.Equal(t, output, "\033[30moutput\033[0m")
+}

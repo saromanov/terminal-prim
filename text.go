@@ -67,6 +67,7 @@ func (t *Text) Text(str string) *Text {
 	return t
 }
 
+// AlignCenter provides adding text to the center
 func (t *Text) AlignCenter(width int) *Text {
 	t.addMethod(func() {
 		totalPadLen := width - len(t.output)
