@@ -115,7 +115,6 @@ func (t *Text) RemoveEscapes() *Text {
 				output = append(output, r)
 			}
 		}
-		fmt.Println("OUT: ", string(output))
 		t.lines[0] = string(output)
 	})
 	return t
