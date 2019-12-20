@@ -32,7 +32,7 @@ func TestIdentLeft(t *testing.T) {
 
 func TestRemoveEscapes(t *testing.T) {
 	output := NewText("output\x1b").
-		IdentLeft(2).
+		RemoveEscapes().
 		String()
 	assert.Equal(t, output, "output")
 }

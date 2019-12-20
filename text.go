@@ -105,16 +105,19 @@ func (t *Text) TrimSpace() *Text {
 
 // RemoveEscapes provides removing of escapes from the line
 func (t *Text) RemoveEscapes() *Text {
-	var output []rune
-	for _, line := range t.lines {
-		for _, r := range []rune(line) {
-			if r == '\x1b' {
-				continue
+	t.addMethod(func() {
+		var output []rune
+		for _, line := range t.lines {
+			for _, r := range []rune(line) {
+				if r == '\x1b' {
+					continue
+				}
+				output = append(output, r)
 			}
-			output = append(output, r)
 		}
-	}
-	t.output = string(output)
+		fmt.Println("OUT: ", string(output))
+		t.lines[0] = string(output)
+	})
 	return t
 }
 
