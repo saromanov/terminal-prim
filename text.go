@@ -115,7 +115,7 @@ func (t *Text) RemoveEscapes() *Text {
 				output = append(output, r)
 			}
 		}
-		t.lines[0] = string(output)
+		t.lines[t.textLines] = string(output)
 	})
 	return t
 }
