@@ -29,3 +29,10 @@ func TestIdentLeft(t *testing.T) {
 		String()
 	assert.Equal(t, output, "")
 }
+
+func TestRemoveEscapes(t *testing.T) {
+	output := NewText("output\x1b").
+		IdentLeft(2).
+		String()
+	assert.Equal(t, output, "output")
+}
